@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # My Apps
+    'core',
 
     # Others
     'bootstrap4',
@@ -83,8 +84,8 @@ WSGI_APPLICATION = 'django_studies.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django_projects',
-        'USER': 'djangoStudies',
+        'NAME': 'mysql',
+        'USER': 'doug',
         'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '3306',
