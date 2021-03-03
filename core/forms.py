@@ -1,4 +1,5 @@
 from django import forms
+from django.core.mail.message import EmailMessage
 
 
 class contactForms(forms.Form):
@@ -7,5 +8,21 @@ class contactForms(forms.Form):
     subject = forms.CharField(label='Assunto', max_length=120)
     message = forms.CharField(label='Mensagem', widget=forms.Textarea())
     
+    def sendMail(self):
+        name = self.cleaned_data['name']
+        email = self.cleaned_data['email']
+        subject = self.cleaned_data['subject']
+        message = self.cleaned_data['message']
+
+        contents = f'Nome: {name}\nE-mail: {email}\nAssunto: {subject}\nMensagem: {message}'
+
+        mail = EmailMessage(
+            subject = 'E-mail enviado pelo sistema Django',
+            body = contents,
+            from_email = 'contato@seudominio.com.br',
+            to = ['contato@seudominio.com.br',],
+            headers = {'Reply-To': email}
+        )
+        mail.send()
 
     
