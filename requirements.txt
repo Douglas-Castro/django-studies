@@ -1,11 +1,14 @@
 asgiref==3.3.1
 beautifulsoup4==4.9.3
 certifi==2019.9.11
+coverage==5.5
 Django==3.1.4
+django-adminlte3==0.1.6
 django-bootstrap4==2.3.1
 django-stdimage==5.1.1
 gunicorn==20.0.4
 importlib-metadata==2.1.1
+model-mommy==2.0.0
 mysqlclient==2.0.3
 Pillow==8.0.1
 pipenv==2018.11.26
