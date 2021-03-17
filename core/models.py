@@ -23,6 +23,9 @@ class Product(Base):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('product-detail', kwargs={'pk': self.pk})
+
 
 def product_pre_save(signal, instance, sender, **kwargs):
     instance.slug = slugify(instance.name)
