@@ -1,54 +1,48 @@
-
+from django.views.generic import FormView, TemplateView
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import redirect
-from .forms import contactForms, ProductModelForm
+from .forms import ContactForms, ProductModelForm
 from .models import Product
 
-def index(request):
-    context = {
-        'products': Product.objects.all()
-    }
-    return render(request, 'index.html', context)
+
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['products'] = Product.objects.all()
+
+        return context
 
 
-def contact(request):
-    form = contactForms(request.POST or None)
+class ContactView(FormView):
+    template_name = 'contact.html'
+    form_class = ContactForms
+    success_url = reverse_lazy('contato')
 
-    if str(request.method) == 'POST':
-        if form.is_valid():
-            form.sendMail()
+    def form_valid(self, form, *args, **kwargs):
+        form.send_mail()
+        messages.success(self.request, 'E-mail enviado com sucesso!')
 
-            messages.success(request, 'E-mail enviado com sucesso!')
-            form = contactForms()
-        else:
-            messages.error(request, 'Erro ao enviar e-mail!')
+        return super(ContactView, self).form_valid(form, *args, **kwargs)
 
-    context = {
-        'form' : form
-    }
+    def form_invalid(self, form, *args, **kwargs):
+        messages.error(self.request, 'Erro ao enviar o e-mail.')
 
-    return render(request, 'contact.html', context)
+        return super(ContactView, self).form_invalid(form, *args, **kwargs)
 
 
-def product(request):
-    if str(request.user) != 'AnonymousUser':
-        if str(request.method) == 'POST':
-            form = ProductModelForm(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Produto Salvo com Sucesso!')
-                form = ProductModelForm()
-            else:
-                messages.error(request, 'Erro ao salvar produto.')
-        else:
-            form = ProductModelForm()
-        
-        context = {
-            'form': form
-        }
+class ProductCreate(FormView):
+    template_name = 'product.html'
+    form_class = ProductModelForm
+    success_url = reverse_lazy('index')
 
-        return render(request, 'product.html', context)
-    else:
-        return redirect('index')
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, 'Produto Salvo!')
+        print(form.cleaned_data)
+        return super().form_valid(form) 
 
