@@ -3,13 +3,13 @@ from django.core.mail.message import EmailMessage
 from .models import Product
 
 
-class contactForms(forms.Form):
+class ContactForms(forms.Form):
     name = forms.CharField(label='Nome', max_length=100)
     email = forms.EmailField(label='E-mail', max_length=100)
     subject = forms.CharField(label='Assunto', max_length=120)
     message = forms.CharField(label='Mensagem', widget=forms.Textarea())
     
-    def sendMail(self):
+    def send_mail(self):
         name = self.cleaned_data['name']
         email = self.cleaned_data['email']
         subject = self.cleaned_data['subject']
