@@ -12,7 +12,6 @@
         {% bootstrap_messages %}
         <form action="{% url 'produto' %}" method="POST" class="form" autocomplete="off" enctype="multipart/form-data">
             {% csrf_token %}
-
             {% bootstrap_form form %}
             {% buttons %}
                 <button type="submit" class="btn-primaty">
