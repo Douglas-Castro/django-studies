@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import index, contact, product
+from .views import IndexView, ContactView, ProductCreate
 
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('contato/', contact, name='contato'),
-    path('produto/', product, name='produto'),
+    path('', IndexView.as_view(), name='index'),
+    path('contato/', ContactView.as_view(), name='contato'),
+    path('produto/', ProductCreate.as_view(), name='produto'),
 ]
